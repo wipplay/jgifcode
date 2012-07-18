@@ -133,7 +133,11 @@ public class GifImageUtil {
 	public static void resizeGif(final String srcPath, final String dstPath,
 			final int newWidth, final int newHeight) throws IOException {
 		ResizeGifImage.resize(srcPath, dstPath, newWidth, newHeight);
-
+	}
+	
+	public static void resizeGif(final String srcPath, final String dstPath,
+			final int newWidth, final int newHeight, final int cropX, final int cropY) throws IOException {
+		ResizeGifImage.resize(srcPath, dstPath, newWidth, newHeight, cropX, cropY);
 	}
 	
 	public static void flipGif(final String srcPath, final String dstPath,

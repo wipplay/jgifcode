@@ -16,6 +16,12 @@ public class ResizeGifImage {
 
 	public static void resize(final String srcFileName,
 			final String dstFileName, final int newWidth, final int newHeight)
+					throws IOException {
+		resize(srcFileName, dstFileName, newWidth, newHeight, -1, -1);
+	}
+	
+	public static void resize(final String srcFileName,
+			final String dstFileName, final int newWidth, final int newHeight, final int cropX, final int cropY)
 			throws IOException {
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -61,7 +67,11 @@ public class ResizeGifImage {
 
 					int x1 = Math.round(images[i].getWidth() * perw);
 					int y1 = Math.round(images[i].getHeight() * perh);
-
+					if (cropX == -1 && cropY == -1) {
+						image = cropImageToRatio(image, (double)newWidth/(double)newHeight);
+					} else {
+						image = Scalr.crop(image, cropX, cropY, newWidth, newHeight);
+					}
 					image = resizeImage(image, x1, y1);
 
 					int t = gifDecoder.getDelay(i);
@@ -110,4 +120,25 @@ public class ResizeGifImage {
 		return dimg;
 	}
 
+	public static BufferedImage cropImageToRatio(BufferedImage originalImage, double targetRatio) {
+		BufferedImage croppedImage = null;
+		double originalRatio = (double)originalImage.getWidth() / (double)originalImage.getHeight();
+		if (originalRatio > targetRatio) {
+			// pillar boxing
+			// originalImage.getWidth();
+			//originalImage.getHeight() * targetRatio
+			int targetWidth = (int) (originalImage.getHeight() * targetRatio);
+			int cropX = (originalImage.getWidth() - targetWidth) / 2;
+			croppedImage = Scalr.crop(originalImage, cropX, 0, targetWidth, originalImage.getHeight());
+		} else if (originalRatio < targetRatio) {
+			// letter boxing
+			int targetHeight = (int) (originalImage.getWidth() / targetRatio);
+			int cropY = (originalImage.getHeight() - targetHeight) / 2;
+			croppedImage = Scalr.crop(originalImage, 0, cropY, originalImage.getWidth(), targetHeight);
+		} else {
+			// sinon on ne fait rien
+			croppedImage = originalImage;
+		}
+		return croppedImage;
+	}
 }
