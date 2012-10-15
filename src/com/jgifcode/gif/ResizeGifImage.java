@@ -17,11 +17,11 @@ public class ResizeGifImage {
 	public static void resize(final String srcFileName,
 			final String dstFileName, final int newWidth, final int newHeight)
 					throws IOException {
-		resize(srcFileName, dstFileName, newWidth, newHeight, -1, -1);
+		resize(srcFileName, dstFileName, newWidth, newHeight, -1, -1, -1, -1);
 	}
 	
 	public static void resize(final String srcFileName,
-			final String dstFileName, final int newWidth, final int newHeight, final int cropX, final int cropY)
+			final String dstFileName, final int newWidth, final int newHeight, final int cropX, final int cropY, final int sourceWidth, final int sourceHeight)
 			throws IOException {
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -70,7 +70,8 @@ public class ResizeGifImage {
 					if (cropX == -1 && cropY == -1) {
 						image = cropImageToRatio(image, (double)newWidth/(double)newHeight);
 					} else {
-						image = Scalr.crop(image, cropX, cropY, newWidth, newHeight);
+						image = Scalr.crop(image, cropX, cropY, sourceWidth, sourceHeight);
+						image = Scalr.resize(image, Method.QUALITY, newWidth, newHeight);;
 					}
 					image = resizeImage(image, x1, y1);
 
@@ -111,7 +112,7 @@ public class ResizeGifImage {
 			final int newW, final int newH) {
 		BufferedImage dimg = null;
 		try {
-			dimg = Scalr.resize(img, Method.SPEED, newW, newH);
+			dimg = Scalr.resize(img, Method.QUALITY, newW, newH);
 			// saveImages(dimg);
 		} catch (Exception e) {
 			e.printStackTrace();
