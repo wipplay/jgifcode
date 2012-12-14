@@ -62,8 +62,8 @@ public class ResizeGifImage {
 
 				try {
 
-					int x = Math.round(gifDecoder.getGifFrame(i).ix * perw);
-					int y = Math.round(gifDecoder.getGifFrame(i).iy * perh);
+					int x = 0;
+					int y = 0;
 
 					int x1 = Math.round(images[i].getWidth() * perw);
 					int y1 = Math.round(images[i].getHeight() * perh);
@@ -78,7 +78,7 @@ public class ResizeGifImage {
 					int t = gifDecoder.getDelay(i);
 					e.setDelay(t); // 1 frame per sec
 
-					e.addFrame(image, x, y);
+					e.addFrame(image);
 
 				} catch (Throwable throwable) {
 					throwable.printStackTrace();

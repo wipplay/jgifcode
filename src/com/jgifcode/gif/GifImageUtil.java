@@ -98,12 +98,10 @@ public class GifImageUtil {
 					int startX = 0, startY = 0;
 					if (attributes.gifDecoder != null) {
 						t = attributes.gifDecoder.getDelay(i);
-						startX = attributes.gifDecoder.getGifFrame(i).ix;
-						startY = attributes.gifDecoder.getGifFrame(i).iy;
 					}
 					e.setDelay(t); // 1 frame per sec
 
-					e.addFrame(image, startX, startY);
+					e.addFrame(image);
 
 				} catch (Throwable throwable) {
 					throwable.printStackTrace();
